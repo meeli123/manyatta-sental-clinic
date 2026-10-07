@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   MANYATTA DENTAL — DESIGN TOKENS
+   Palette: warm ivory · deep anchovy ink · clinical teal · champagne
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Surfaces */
+  --color-ivory: #faf8f3;
+  --color-parchment: #f2efe6;
+  --color-surface: #ffffff;
+
+  /* Ink */
+  --color-ink: #16232a;
+  --color-ink-soft: #3e4e57;
+  --color-muted: #5f6e77;
+
+  /* Primary — deep dental teal */
+  --color-teal: #0e5d5b;
+  --color-teal-deep: #0a4544;
+  --color-teal-ink: #122a2c;
+  --color-teal-soft: #e3efec;
+
+  /* Accent — muted champagne */
+  --color-champagne: #b28a4e;
+  --color-bronze: #8a6834;
+  --color-champagne-soft: #f1e8d6;
+
+  /* Lines & feedback */
+  --color-line: #e5e1d6;
+  --color-success: #2e7d5b;
+  --color-error: #a94442;
+
+  /* Radii */
+  --radius-card: 1.25rem;
+
+  /* Motion */
+  --animate-marquee: marquee 48s linear infinite;
+  --animate-spin-slow: spin 26s linear infinite;
+  --animate-float-soft: float-soft 7s ease-in-out infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes float-soft {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ───────────────────────────────────────────── Base ── */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 480;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+  }
+
+  ::selection {
+    background-color: var(--color-teal);
+    color: var(--color-ivory);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ─────────────────────────────── Scroll reveal ── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.85s ease,
+    transform 0.95s cubic-bezier(0.22, 0.61, 0.21, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ─────────────────────────────── Texture & decor ── */
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.21, 1);
+}
+
+.link-underline:hover::after,
+.link-underline[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ─────────────────────────────── Forms ── */
+
+.field {
+  width: 100%;
+  border-radius: 0.9rem;
+  border: 1px solid var(--color-line);
+  background-color: var(--color-surface);
+  padding: 0.85rem 1.05rem;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.field::placeholder {
+  color: var(--color-muted);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-teal) 14%, transparent);
+}
+
+.field[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.field[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 14%, transparent);
+}
+
+/* ─────────────────────────────── Step transitions ── */
+
+@keyframes fade-slide {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
