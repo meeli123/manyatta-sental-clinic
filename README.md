@@ -12,8 +12,15 @@ Design direction: calm confidence · clinical precision · human warmth.
 
 ```bash
 npm install
-npx drizzle-kit push   # create the appointment_requests table (needs DATABASE_URL)
-npm run dev            # http://localhost:3000
+netlify dev            # runs the app with Netlify Database available locally
+```
+
+The database is Netlify Database (managed Postgres). Migrations live in
+`netlify/database/migrations/` and are applied automatically on deploy. After
+changing `src/db/schema.ts`, generate a new migration:
+
+```bash
+npx drizzle-kit generate --name <describe_the_change>
 ```
 
 Production:
